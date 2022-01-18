@@ -30,7 +30,7 @@ def upload_file():
         return render_template('result.html', user_img= user_img_path,black_image=black_image_path,colorize_image=colorize_image_path)
 
 if __name__ == "__main__":
-        application.run(debug=True)
+        application.run(debug=True,host='0.0.0.0')
 
 
 
