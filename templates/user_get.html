@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+        <title>Colorize Deeplearing</title>
+        <meta charset="UTF-8">
+        <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	function previewImage(targetObj, view_area) {
+	var preview = document.getElementById(view_area); //div id
+	var ua = window.navigator.userAgent;
+
+	var files = targetObj.files;
+	for ( var i = 0; i < files.length; i++) {
+		var file = files[i];
+		var imageType = /image.*/; //이미지 파일일경우만.. 뿌려준다.
+		if (!file.type.match(imageType))
+			continue;
+		var prevImg = document.getElementById("prev_" + view_area); //이전에 미리보기가 있다면 삭제
+		if (prevImg) {
+			preview.removeChild(prevImg);
+		}
+		var img = document.createElement("img"); 
+		img.id = "prev_" + view_area;
+		img.classList.add("obj");
+		img.file = file;
+		img.style.width = '500px'; 
+		img.style.height = '400px';
+		preview.appendChild(img);
+		if (window.FileReader) { // FireFox, Chrome, Opera 확인.
+			var reader = new FileReader();
+			reader.onloadend = (function(aImg) {
+				return function(e) {
+					aImg.src = e.target.result;
+				};
+			})(img);
+			reader.readAsDataURL(file);
+		} else { // safari is not supported FileReader
+			//alert('not supported FileReader');
+			if (!document.getElementById("sfr_preview_error_"
+					+ view_area)) {
+				var info = document.createElement("p");
+				info.id = "sfr_preview_error_" + view_area;
+				info.innerHTML = "not supported FileReader";
+				preview.insertBefore(info, null);
+			}
+		}
+	}
+}
+</script>
+<style type="text/css">
+	body{
+		font-family: Objective,sans-serif;
+	}
+	/*Logo*/
+	#h_img{width: 30px; height: 30px;}
+	/*카테고리*/
+	header{
+		width:100%;
+		position:fixed;
+	}
+	.navbar{
+		opacity: 0.8;
+	}
+	.navbar.activated{
+		opacity: 1;
+	}
+	.nav-link{
+		font-weight: bold;
+	}
+	.side-page-main-div{
+		padding-top: 100px;
+	}
+</style>
+<body>
+    <!-- 상단 카테고리 -->
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		  <a class="navbar-brand" href="/"><h3 style="color: #8C1DF3">Colorize Deeplearing</h3></a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarNav">
+		    <ul class="navbar-nav">
+		      <li class="nav-item"><a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a></li>
+		      <li class="nav-item active"><a class="nav-link" href="/user_get">Colorize change black to color</a></li>
+		    </ul>
+		  </div>
+		</nav>
+	</header>
+
+    <div class="side-page-main-div"></div>
+        <h1 align="center">Colorize change black to color</h1>
+        <br>
+        <form align="center" action="/result" method="POST" enctype="multipart/form-data">
+            <!-- Target Image 사용자 업로드 -->
+            <h2 align="center" style="color: #88B1F3">Target Image</h2>
+            <input type="file" name="user_img" id="user_img" value="userImage" onchange="previewImage(this,'view_area')"/>
+            <input type="submit" value="확인"/>
+            <br><br>
+            <div align="center" id='view_area'></div>
+        </form>
+    </div>
+    <br><br><br>
+</body>
+</html>
