@@ -33,7 +33,8 @@ gast
 google-auth 
 google-auth-oauthlib 
 google-pasta==0.2.0
-grpcio 
+grpcio
+gunicorn==20.1.0 
 h11==0.12.0
 h5py 
 idna 
