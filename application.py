@@ -36,15 +36,8 @@ def upload_file():
                         black_image_path =  black_image
                         colorize_image_path = colorize_image
                         return render_template('result.html', user_img= user_img_path,black_image=black_image_path,colorize_image=colorize_image_path)
-        return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-          <input type=file name=file>
-          <input type=submit value=Upload>
-        </form>
-        '''
+        return render_template('user_get.html')
+
 
 if __name__ == "__main__":
         application.run(debug=True,host='0.0.0.0')
